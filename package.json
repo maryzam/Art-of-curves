@@ -1,12 +1,12 @@
 {
-    "name": "art_of_curvies",
+    "name": "art_of_curves",
     "version": "1.0.0",
     "description": "",
     "keywords": [
         "d3",
-        "visualisation",
+        "data visualisation",
         "math",
-        "curvies",
+        "curves",
         "rhodonea curve",
         "rose"
     ],
@@ -17,7 +17,7 @@
     },
     "repository": {
         "type": "git",
-        "url": "https://github.com/maryzam/SayHelloWorld.git"
+        "url": "https://github.com/maryzam/Art-of-curves.git"
     },
     "dependencies": {
         "d3": "4.12.0"
