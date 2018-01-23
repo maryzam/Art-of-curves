@@ -14,8 +14,8 @@
     background: #2a2a2a;
 
     font-family: "Kaushan Script", cursive;
-    font-size: 24px; 
-    color: ivory;
+    font-size: 12px; 
+    color: rgba(245, 245, 220, 0.7);
 }
 
 header {
@@ -48,16 +48,55 @@ footer {
     text-align: center;
 }
 
+.title {
+    font-size: 24px;
+}
+
+.title small {
+    font-size: 12px;
+    color: rgba(245, 245, 220, 0.4);
+}
+
+.info {
+    font-size: 16px;
+}
+
+.info strong {
+    color: tomato;
+}
+
 .container {
     flex: 1 1 100%;
+    display: flex;
+    justify-content: center;
+    -o-justify-content: center;
+    -webkit-justify-content: center;
+
+    align-items: center;
+    -ms-align-items: center;
+    -o-align-items: center;
+    -webkit-align-items: center;
+}
+
+.container svg {
+    display: flex;
 }
 
 .container path {
     fill: none;
-    stroke: tomato;
-    stroke-dasharray: 5, 1;
+    stroke: #555;
+    stroke-dasharray: 5 1;
+    pointer-events: none;
 }
 
-.container text {
-    fill: tomato;
+.container path.dynamic {
+    stroke-width: 2px;
+    stroke-dasharray: none;
+}
+
+.container rect {
+    pointer-events: all;
+    cursor: pointer;
+    stroke: none;
+    fill: none;
 }
