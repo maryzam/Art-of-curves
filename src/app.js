@@ -90,7 +90,8 @@ function startDrawingCurve(data, handler) {
    // show coeff info label
     parent
         .select("text")
-        .style("fill-opacity", 1);
+            .transition().duration(300)
+            .style("fill-opacity", 1);
 
     // start drawing a curve
     const dynamicPath = parent
@@ -109,8 +110,9 @@ function startDrawingCurve(data, handler) {
 function stopDrawingCurve(data, handler) {
     // hide coeff info label
     d3.select(handler.parentNode)
-      .select("text")
-        .style("fill-opacity", 0.3);
+        .select("text")
+            .transition().duration(300)
+            .style("fill-opacity", 0.3);
     // stop drawing a curve
     clearInterval(timer);
     timer = null;
