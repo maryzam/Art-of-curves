@@ -100,3 +100,9 @@ footer {
     stroke: none;
     fill: none;
 }
+
+.container text {
+    pointer-events: none;
+    fill: tomato;
+    fill-opacity: 0.3;
+}
