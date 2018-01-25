@@ -104,5 +104,4 @@ footer {
 .container text {
     pointer-events: none;
     fill: tomato;
-    fill-opacity: 0.3;
 }
