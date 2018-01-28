@@ -1,5 +1,8 @@
 ﻿
-export function getGridSize(cellsCount, boundingRect) {
+const minCellSize = 100;
+
+export function getGridSize(cellsCount, container) {
+    const boundingRect = container.node().getBoundingClientRect();
     const grid = { width: cellsCount, height: 1, cellSize: 0 }; 
     let height = Math.floor(Math.sqrt(cellsCount));
     while (height > 0) {
@@ -10,8 +13,12 @@ export function getGridSize(cellsCount, boundingRect) {
         }
         height--;
     }
-    const clientWidth = Math.floor(boundingRect.width / grid.width);
-    const clientHeight = Math.floor(boundingRect.height / grid.height);
-    grid.cellSize = Math.min(clientHeight, clientWidth);
+    grid.cellSize = Math.floor(boundingRect.width / grid.width);
+    if (grid.cellSize < minCellSize) {
+        const swap = grid.width;
+        grid.width = grid.height;
+        grid.height = swap;
+        grid.cellSize = Math.floor(boundingRect.width / grid.width);
+    }
     return grid;
 }

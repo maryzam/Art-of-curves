@@ -3,14 +3,13 @@ import { getRoseCoefficients } from "./utils/get-rose-coefficients"
 import { getGridSize } from "./utils/get-grid-size"
 
 const container = d3.select(".container");
-const size = container.node().getBoundingClientRect();
 
-const coeffs = getRoseCoefficients(7, 9);
-const grid = getGridSize(coeffs.length, size);
-
+const coeffs = getRoseCoefficients(9, 9);
 const scaleCoeff = d3.scaleLog().domain([coeffs[0].k, coeffs[coeffs.length - 1].k]);
 const roseColor = d3.scaleSequential((d) => d3.interpolateWarm(scaleCoeff(d)));
-const roseRadius = (grid.cellSize - 10) / 2 - 3;
+
+const originCellSize = 120;
+const roseRadius = (originCellSize - 10) / 2 - 3;
 
 const line = d3.lineRadial()
                     .angle((d) => d.angle)
@@ -22,38 +21,24 @@ function generateRose(coeff) {
     const step = period / 100;
     const points = d3.range(0, (period + step), step)
         .map(function(theta) {
-            const r = roseRadius * Math.sin(coeff.k * theta);
-            return { radius: r, angle: theta };
+            const r =  Math.sin(coeff.k * theta);
+            return { radius: r  * roseRadius, angle: theta };
         });
     return points;
 }
 
-const svg = container
-                .append("svg")
-                    .attr("width", grid.width * grid.cellSize)
-                    .attr("height", grid.height * grid.cellSize);
-
 const data = coeffs.map((coeff, idx) => {
-    const x = idx % grid.width;
-    const y = Math.floor(idx / grid.width);
     return {
         coeff: coeff,
-        pos: {
-            x: x,
-            y: y
-        },
         points: generateRose(coeff)
     }
 });
 
+const svg = container.append("svg");
+
 const blocks = svg.selectAll("g")
                     .data(data).enter()
-                        .append("g")
-                            .attr("transform", (d) => {
-                                const width = (d.pos.x + 0.5) * grid.cellSize;
-                                const height = (d.pos.y + 0.5) * grid.cellSize;
-                                return `translate(${width},${height})`;
-                            });
+                        .append("g");
 
 blocks
     .append("path")
@@ -64,7 +49,7 @@ blocks
         .attr("class", "dynamic")
         .style("stroke", (d) => roseColor(d.coeff.k));
 
-const textOffset = -grid.cellSize / 2;
+const textOffset = -originCellSize / 2;
 const textTranslate = `translate(${textOffset},${textOffset + 10})`;
 
 blocks
@@ -75,10 +60,10 @@ blocks
 
 blocks
     .append("rect")
-        .attr("x", -grid.cellSize / 2)
-        .attr("y", -grid.cellSize / 2)
-        .attr("width", grid.cellSize)
-        .attr("height", grid.cellSize)
+        .attr("x", -originCellSize / 2)
+        .attr("y", -originCellSize / 2)
+        .attr("width", originCellSize)
+        .attr("height", originCellSize)
             .on("mouseover", function(d) { startDrawingCurve(d, this); })
             .on("mouseout", function(d) { stopDrawingCurve(d, this); });
 
@@ -117,3 +102,24 @@ function stopDrawingCurve(data, handler) {
     clearInterval(timer);
     timer = null;
 }
+
+function resize() {
+    const grid = getGridSize(coeffs.length, container);
+    const scale = grid.cellSize / originCellSize;
+    svg
+        .attr("width", grid.width * grid.cellSize)
+        .attr("height", grid.height * grid.cellSize);
+
+    svg.selectAll("g")
+        .attr("transform",
+            (d, idx) => {
+                const x = idx % grid.width;
+                const y = Math.floor(idx / grid.width);
+                const width = (x + 0.5) * grid.cellSize;
+                const height = (y + 0.5) * grid.cellSize;
+                return `translate(${width},${height}) scale(${scale})`;
+            });
+}
+
+d3.select(window).on("resize.updateChart", resize);
+resize();
