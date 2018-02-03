@@ -8,8 +8,10 @@ You can download it and run index.html page in your browser or try a live demo t
 
 ## Demo
 
-Live demo is [here] (https://maryzam.github.io/Art-of-curves/)
+Live demo is [here](https://maryzam.github.io/Art-of-curves/)
 Hover a curve to colorize it dynamically!
+
+![alt text](https://raw.githubusercontent.com/maryzam/Art-of-curves/master/assets/images/demo-curves.gif "")
 
 ## License
 
